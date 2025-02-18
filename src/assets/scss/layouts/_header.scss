@@ -1,0 +1,31 @@
+@use "../variables" as *;
+
+html .topbar {
+  background-color: var(--mat-sys-surface);
+  position: sticky;
+  top: 0;
+  z-index: 9;
+  height: $header-height;
+  border-radius: $border-radius;
+  box-shadow: var(--mat-sys-level2);
+}
+
+.topbar-dd {
+  min-width: 220px !important;
+}
+
+.upgrade-bg {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 100%;
+}
+
+.object-cover {
+  object-fit: cover;
+}
+
+.profile-dd {
+  margin-top: -5px;
+  margin-left: -5px;
+}
