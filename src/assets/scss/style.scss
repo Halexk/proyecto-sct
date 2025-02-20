@@ -1,24 +1,24 @@
-@use "sass:map";
 @use "@angular/material" as mat;
+@include mat.core();
 
-@use "themecolors/blue_theme";
+@import "themecolors/default_theme";
+@import "variables";
+@import "helpers/color";
+@import "helpers/icon-size";
 
-@use "variables" as *;
-@use "override-component";
-@use "theme-variables/default-variables";
-@use "theme-variables/light-theme-variables";
+//Theme colors
+
+@import "themecolors/default_theme";
+@include mat.all-component-themes($bluetheme);
 
 //container layout
-@use "layouts/transitions";
-@use "helpers/color";
-@use "helpers/border-color";
-@use "helpers/icon-size";
-@use "container";
-@use "layouts/layouts";
-@use "grid/grid";
-@use "helpers/custom-flex";
-@use "helpers";
+@import "overrides/materialoverrides";
+@import "container";
+@import "layouts/layouts";
+@import "grid/grid";
+@import "helpers/custom-flex";
+@import "helpers/index";
 
 // pages
-@use "pages/auth";
-@use "pages/dashboards"; 
+@import "pages/auth";
+@import "pages/dashboards";

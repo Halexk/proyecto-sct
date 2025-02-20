@@ -1,0 +1,96 @@
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title class="m-b-0">Reporte Completo</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="b-t-1">
+    <form [formGroup]="reportForm" (ngSubmit)="generarReporte()">
+      <div class="row">
+        <div class="col-sm-6 col-lg-4">
+          <mat-form-field>
+            <mat-label>Fecha de Inicio</mat-label>
+            <input matInput [matDatepicker]="picker1" formControlName="fechaInicio" required>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6 col-lg-4">
+          <mat-form-field>
+            <mat-label>Fecha de Fin</mat-label>
+            <input matInput [matDatepicker]="picker2" formControlName="fechaFin" required>
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6 col-lg-4">
+          <button mat-raised-button color="primary" type="submit">Generar Reporte</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Reporte de Equipos Reparados -->
+    <div *ngIf="reparadosData">
+      <h3>Equipos Reparados</h3>
+      <table mat-table [dataSource]="reparadosData" class="mat-elevation-z8">
+        <ng-container matColumnDef="totalReparados">
+          <th mat-header-cell *matHeaderCellDef>Total Reparados</th>
+          <td mat-cell *matCellDef="let item">{{ item.totalReparados }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsReparados"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsReparados"></tr>
+      </table>
+    </div>
+
+    <!-- Reporte de Tiempo Promedio de Reparación -->
+    <div *ngIf="tiempoReparacionData">
+      <h3>Tiempo Promedio de Reparación</h3>
+      <table mat-table [dataSource]="tiempoReparacionData" class="mat-elevation-z8">
+        <ng-container matColumnDef="tiempoPromedio">
+          <th mat-header-cell *matHeaderCellDef>Tiempo Promedio (días)</th>
+          <td mat-cell *matCellDef="let item">{{ item.tiempoPromedio }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsTiempoReparacion"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsTiempoReparacion"></tr>
+      </table>
+    </div>
+
+    <!-- Reporte de Equipos Reubicados -->
+    <div *ngIf="reubicadosData">
+      <h3>Equipos Reubicados</h3>
+      <table mat-table [dataSource]="reubicadosData" class="mat-elevation-z8">
+        <ng-container matColumnDef="totalReubicados">
+          <th mat-header-cell *matHeaderCellDef>Total Reubicados</th>
+          <td mat-cell *matCellDef="let item">{{ item.totalReubicados }}</td>
+        </ng-container>
+        <ng-container matColumnDef="ubicacionMasComun">
+          <th mat-header-cell *matHeaderCellDef>Ubicación Más Común</th>
+          <td mat-cell *matCellDef="let item">{{ item.ubicacionMasComun }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsReubicados"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsReubicados"></tr>
+      </table>
+    </div>
+
+    <!-- Reporte de Retiros para Reparación -->
+    <div *ngIf="retirosReparacionData">
+      <h3>Retiros para Reparación</h3>
+      <table mat-table [dataSource]="retirosReparacionData" class="mat-elevation-z8">
+        <ng-container matColumnDef="ubicacion">
+          <th mat-header-cell *matHeaderCellDef>Ubicación</th>
+          <td mat-cell *matCellDef="let item">{{ item.ubicacion }}</td>
+        </ng-container>
+        <ng-container matColumnDef="totalRetiros">
+          <th mat-header-cell *matHeaderCellDef>Total Retiros</th>
+          <td mat-cell *matCellDef="let item">{{ item.totalRetiros }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsRetirosReparacion"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsRetirosReparacion"></tr>
+      </table>
+    </div>
+
+    <!-- Botones de descarga -->
+    <div style="margin: auto;" *ngIf="reparadosData || tiempoReparacionData || reubicadosData || retirosReparacionData">
+      <button mat-raised-button color="accent" (click)="descargarPDF()">Descargar PDF</button>
+      <button mat-raised-button color="accent" (click)="descargarExcel()">Descargar Excel</button>
+    </div>
+  </mat-card-content>
+</mat-card>

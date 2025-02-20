@@ -38,6 +38,7 @@ export interface productsalesChart {
 
 @Component({
   selector: 'app-product-sales',
+  standalone: true,
   imports: [MaterialModule, TablerIconsModule, MatButtonModule, NgApexchartsModule],
   templateUrl: './product-sales.component.html',
 })
@@ -54,14 +55,14 @@ export class AppProductSalesComponent {
       series: [
         {
           name: '',
-          color: '#fb977d',
+          color: '#8763da',
           data: [25, 66, 20, 40, 12, 58, 20],
         },
       ],
 
       chart: {
         type: 'area',
-        fontFamily: "inherit",
+        fontFamily: "'Plus Jakarta Sans', sans-serif;",
         foreColor: '#adb0bb',
         toolbar: {
           show: false,
@@ -77,7 +78,7 @@ export class AppProductSalesComponent {
         width: 2,
       },
       fill: {
-        colors: ['#fb977d'],
+        colors: ['#8763da'],
         type: 'solid',
         opacity: 0.05,
       },

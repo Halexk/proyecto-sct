@@ -1,16 +1,14 @@
-@use "../variables" as *;
-
 .mat-drawer.sidebarNav {
   width: $sidenav-desktop;
   flex-shrink: 0;
-  transition: width .4s cubic-bezier(.25,.8,.25,1);
+  transition: swift-ease-out(width);
   position: absolute;
   overflow-x: hidden;
   top: 0 !important;
   left: 0;
   border: 0 !important;
   height: 100%;
-  box-shadow: var(--mat-sys-level2) !important;
+  box-shadow: $box-shadow !important;
 
   .ng-scroll-content {
     display: block;
@@ -34,6 +32,117 @@
   .contentWrapper {
     margin-left: calc(#{$sidenav-desktop} + #{$layout-padding}) !important;
   }
+
+  .sidebarNav-mini {
+    .contentWrapper {
+      margin-left: calc(#{$sidenav-mini} + #{$layout-padding}) !important;
+    }
+  }
+
+  .sidebarNav-mini {
+    .sidebarNav {
+      width: $sidenav-mini;
+
+      .profile-bar {
+        display: none;
+      }
+
+      .sidebar-list {
+        &.mdc-list {
+          .mdc-list-group__subheader {
+            padding: 0 !important;
+          }
+        }
+
+        .menu-list-item {
+          padding: 8px 17px;
+
+          .mdc-list-item__content {
+            display: none;
+          }
+
+          .mdc-list-item__start {
+            margin-left: 10px !important;
+            margin-right: 8px !important;
+          }
+        }
+      }
+
+      &:hover {
+        width: $sidenav-desktop;
+
+        .profile-bar {
+          display: block;
+        }
+
+        .branding {
+          width: 100%;
+        }
+
+        .sidebar-list {
+          &.mdc-list {
+            .mdc-list-group__subheader {
+              padding: 3px 16px !important;
+            }
+          }
+
+          .menu-list-item {
+            padding: 8px 26px;
+
+            .mdc-list-item__content {
+              display: inline;
+            }
+
+            .mdc-list-item__start {
+              margin-left: 0 !important;
+            }
+          }
+
+          &.mdc-list {
+
+            .mdc-list-group__subheader {
+              text-align: left;
+            }
+          }
+        }
+      }
+    }
+
+    .hideMenu {
+      overflow: hidden;
+      width: $sidenav-mini;
+    }
+
+    .branding {
+      width: $sidenav-mini - 15px;
+      overflow: hidden;
+      padding: 16px;
+    }
+
+    .sidebar-list {
+      &.mdc-list {
+        .menu-list-item {
+          margin: 5px 0;
+          margin-bottom: 2px;
+        }
+
+        .mdc-list-group__subheader {
+          text-align: center;
+        }
+      }
+    }
+
+    .contentWrapper {
+      transition: swift-ease-out(width);
+    }
+  }
+}
+
+.customizerBtn {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  z-index: 9;
 }
 
 body {
@@ -49,7 +158,7 @@ body {
         opacity: 0.5;
         font-weight: 700;
         margin-top: 24px;
-        color: var(--mat-sys-on-background);
+        color: $textPrimary;
         padding: 3px 16px !important;
       }
 
@@ -65,6 +174,7 @@ body {
         }
 
         &.tranparent {
+
           &:hover:before,
           &:before {
             content: "";
@@ -80,7 +190,7 @@ body {
             svg {
               width: 13px !important;
               height: 13px !important;
-              fill: var(--mat-sys-on-background);
+              fill: $textPrimary;
             }
           }
 
@@ -91,40 +201,13 @@ body {
             }
           }
         }
-        &.primary {
-          &.activeMenu,
-          &.expanded,
-          &:hover {
-            .mdc-list-item__primary-text,
-            .mat-mdc-list-item-icon {
-              color: var(--mat-sys-primary) !important;
-            }
-          }
-
-          &:before {
-            background-color: var(--mat-sys-primary-fixed-dim);
-          }
-        }
-
-        &.secondary {
-          &.activeMenu,
-          &.expanded,
-          &:hover {
-            .mdc-list-item__primary-text,
-            .mat-mdc-list-item-icon {
-              color: var(--mat-sys-secondary) !important;
-            }
-          }
-
-          &:before {
-            background-color: var(--mat-sys-secondary-fixed-dim);
-          }
-        }
 
         &.warning {
+
           &.activeMenu,
           &.expanded,
           &:hover {
+
             .mdc-list-item__primary-text,
             .mat-mdc-list-item-icon {
               color: $warning !important;
@@ -137,9 +220,11 @@ body {
         }
 
         &.error {
+
           &.activeMenu,
           &.expanded,
           &:hover {
+
             .mdc-list-item__primary-text,
             .mat-mdc-list-item-icon {
               color: $error !important;
@@ -152,9 +237,11 @@ body {
         }
 
         &.success {
+
           &.activeMenu,
           &.expanded,
           &:hover {
+
             .mdc-list-item__primary-text,
             .mat-mdc-list-item-icon {
               color: $success !important;
@@ -189,11 +276,11 @@ body {
           }
 
           .mdc-list-item__primary-text {
-            color: var(--mat-sys-on-background) !important;
+            color: $textPrimary !important;
           }
 
           .mat-mdc-list-item-icon {
-            color: var(--mat-sys-on-background) !important;
+            color: $textPrimary !important;
           }
         }
 
@@ -212,11 +299,11 @@ body {
         }
 
         .item-chip {
-          height: 18px;
+          height: 24px;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 10px;
+          font-size: 12px;
         }
 
         &.expanded:before,
@@ -234,11 +321,11 @@ body {
           color: unset !important;
 
           .mdc-list-item__primary-text {
-            color: var(--mat-sys-on-background) !important;
+            color: $textPrimary !important;
           }
 
           .mat-mdc-list-item-icon {
-            color: var(--mat-sys-on-background) !important;
+            color: $textPrimary !important;
           }
         }
 
@@ -248,8 +335,7 @@ body {
           width: 20px;
           height: 20px;
           fill: transparent !important;
-          color: var(--mat-sys-on-background);
-          display: flex;
+          color: $textPrimary;
         }
 
         .mdc-list-item__primary-text {
