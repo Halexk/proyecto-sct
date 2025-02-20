@@ -8,6 +8,9 @@ import { AppMenuComponent } from './menu/menu.component';
 import { AppTooltipsComponent } from './tooltips/tooltips.component';
 import { AppFormsComponent } from './forms/forms.component';
 import { AppTablesComponent } from './tables/tables.component';
+import { ReportsComponent } from './reports/reports.component';
+import { AppEquipmentComponent } from './equipment/equipment.component';
+import { EquipmentControlComponent } from './equipment-control/equipment-control.component'
 
 export const UiComponentsRoutes: Routes = [
   {
@@ -40,6 +43,18 @@ export const UiComponentsRoutes: Routes = [
       {
         path: 'tables',
         component: AppTablesComponent,
+      },
+      {
+        path: 'reports',
+        component: ReportsComponent,
+      },
+      {
+        path: 'equipmentRegister',
+        component: AppEquipmentComponent,
+      },
+      {
+        path: 'control',
+        component: EquipmentControlComponent,
       },
     ],
   },

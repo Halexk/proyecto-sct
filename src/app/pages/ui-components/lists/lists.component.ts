@@ -13,6 +13,7 @@ export interface Section {
 
 @Component({
   selector: 'app-lists',
+  standalone: true,
   imports: [MatListModule, MatCardModule, DatePipe,MatIconModule, MaterialModule ],
   templateUrl: './lists.component.html',
 })
@@ -24,25 +25,25 @@ export class AppListsComponent {
   folders: Section[] = [
     {
       name: 'Photos',
-      updated: new Date('1/1/25'),
+      updated: new Date('1/1/24'),
     },
     {
       name: 'Recipes',
-      updated: new Date('1/17/25'),
+      updated: new Date('1/17/24'),
     },
     {
       name: 'Work',
-      updated: new Date('1/28/25'),
+      updated: new Date('1/28/24'),
     },
   ];
   notes: Section[] = [
     {
       name: 'Vacation Itinerary',
-      updated: new Date('2/20/25'),
+      updated: new Date('2/20/24'),
     },
     {
       name: 'Kitchen Remodel',
-      updated: new Date('1/18/25'),
+      updated: new Date('1/18/24'),
     },
   ];
 }

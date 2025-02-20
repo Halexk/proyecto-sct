@@ -1,5 +1,3 @@
-@use "variables" as *;
-
 *,
 :after,
 :before {
@@ -8,50 +6,28 @@
 
 body {
   font-family: $font-family;
+  color: $textPrimary;
+  font-size: 14px;
   line-height: 1.334rem;
-  overflow-x: hidden;
-  color: var(--mat-sys-on-background);
 }
 
-.app-topstrip{
-  position: fixed;
-  top: 0;
-  z-index: 10;
+html .mat-drawer-container {
+  background-color: $background;
 }
 
 .mainWrapper {
   display: flex;
-  min-height: calc(100vh - 60px);
+  min-height: 100vh;
   width: 100%;
   flex: 1;
-  margin-top: 60px;
-}
-
-@media (max-width: 1199px){
-  .mainWrapper{
-    margin-top: 98px;
-  }
-}
-
-.container {
-  max-width: 1200px;
-  padding-left: 24px;
-  padding-right: 24px;
-  margin: 0 auto;
-
-  &.full-width {
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
+  height: 100%;
 }
 
 .pageWrapper {
-  padding: 24px;
+  padding-top: $layout-padding;
   min-height: calc(100vh - 70px);
 
   margin: 0 auto;
-
   &.maxWidth {
     max-width: $boxedWidth;
   }
@@ -111,25 +87,23 @@ body {
   cursor: pointer;
 }
 
-a {
-  color: var(--mat-sys-on-background);
+.avatar-group {
+  img {
+    border: 2px solid white;
+    margin-right: -5px;
 
-  &:hover {
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.text-hover-primary:hover {
+  .hover-text {
     color: $primary;
   }
 }
 
-pre {
-  margin: 0;
-  white-space: nowrap;
-}
-
-td.hljs-ln-line.hljs-ln-numbers {
-  padding-right: 10px;
-}
-
-@media (min-width: 768px) {
-  html .flex-sm-row {
-    flex-direction: row !important;
-  }
+.filter-sidebar {
+  width: 290px !important;
 }

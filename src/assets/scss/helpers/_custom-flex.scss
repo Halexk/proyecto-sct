@@ -4,10 +4,6 @@
       display: flex !important;
     }
 
-    .text-lg-left {
-      text-align: left !important;
-    }
-
     .d-lg-none {
       display: none !important;
     }
@@ -40,16 +36,4 @@
 
 .flex-1-auto {
   flex: 1 1 0%;
-}
-
-.hstack {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-}
-
-@media (max-width: 767px) {
-  .hstack {
-    flex-direction: column;
-  }
 }

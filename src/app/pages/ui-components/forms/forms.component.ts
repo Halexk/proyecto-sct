@@ -15,6 +15,7 @@ interface Food {
 
 @Component({
   selector: 'app-forms',
+  standalone: true,
   imports: [
     MatFormFieldModule,
     MatSelectModule,

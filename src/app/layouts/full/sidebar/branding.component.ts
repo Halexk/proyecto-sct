@@ -1,20 +1,22 @@
 import { Component } from '@angular/core';
-import { CoreService } from 'src/app/services/core.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-branding',
-  imports: [],
+  standalone: true,
+  imports: [RouterModule],
   template: `
-    <a href="/" class="logodark">
-      <img
-        src="./assets/images/logos/dark-logo.svg"
-        class="align-middle m-2"
-        alt="logo"
-      />
-    </a>
+    <div class="branding">
+      <a [routerLink]="['/']">
+        <img
+          src="./assets/images/logos/ventel.svg"
+          class="align-middle m-2"
+          alt="logo"
+        />
+      </a>
+    </div>
   `,
 })
 export class BrandingComponent {
-  options = this.settings.getOptions();
-  constructor(private settings: CoreService) {}
+  constructor() {}
 }

@@ -26,6 +26,7 @@ interface stats2 {
 
 @Component({
   selector: 'app-upcoming-schedules',
+  standalone: true,
   imports: [MatCardModule, MatChipsModule, TablerIconsModule, MatButtonModule, MatIconModule],
   templateUrl: './upcoming-schedules.component.html',
 })

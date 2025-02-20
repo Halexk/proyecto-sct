@@ -38,6 +38,7 @@ export interface trafficdistributionChart {
 
 @Component({
   selector: 'app-traffic-distribution',
+  standalone: true,
   imports: [MaterialModule, TablerIconsModule, MatButtonModule, NgApexchartsModule],
   templateUrl: './traffic-distribution.component.html',
 })
@@ -55,7 +56,7 @@ export class AppTrafficDistributionComponent {
       labels: ['5368', 'Refferal Traffic', 'Oragnic Traffic'],
       chart: {
         type: 'donut',
-        fontFamily: "inherit",
+        fontFamily: "'Plus Jakarta Sans', sans-serif;",
         foreColor: '#adb0bb',
         toolbar: {
           show: false,

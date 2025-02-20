@@ -1,0 +1,65 @@
+<mat-card class="cardWithShadow theme-card">
+    <mat-card-header>
+      <mat-card-title class="m-b-0">Editar Estado, Ubicación y Asignación</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="b-t-1">
+      <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <!-- Buscar equipo por Bien Nacional -->
+          <div class="col-sm-6 col-lg-4">
+            <mat-form-field>
+              <mat-label>Buscar por Bien Nacional</mat-label>
+              <input matInput formControlName="bienNacional" required>
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="searchEquipment()">Buscar</button>
+          </div>
+  
+          <!-- Campos editables -->
+          <div class="col-sm-6 col-lg-4" *ngIf="equipment">
+            <mat-form-field>
+              <mat-label>Estado</mat-label>
+              <mat-select formControlName="estado" required>
+                <mat-option value="en uso">En uso</mat-option>
+                <mat-option value="reparacion">Reparación</mat-option>
+                <mat-option value="inoperativo">Inoperativo</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6 col-lg-4" *ngIf="equipment">
+            <mat-form-field>
+              <mat-label>Ubicación</mat-label>
+              <input matInput formControlName="ubicacion" required>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6 col-lg-4" *ngIf="equipment">
+            <mat-form-field>
+              <mat-label>Asignación</mat-label>
+              <input matInput formControlName="asignacion" required>
+            </mat-form-field>
+          </div>
+  
+          <!-- Motivo y Observación -->
+          <div class="col-sm-6 col-lg-4" *ngIf="equipment">
+            <mat-form-field>
+              <mat-label>Motivo</mat-label>
+              <mat-select formControlName="motivo" required>
+                <mat-option value="reubicación">Reubicación</mat-option>
+                <mat-option value="reparación">Reparación</mat-option>
+                <mat-option value="reasignación">Reasignación</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6 col-lg-4" *ngIf="equipment">
+            <mat-form-field>
+              <mat-label>Observación</mat-label>
+              <textarea matInput formControlName="observacion" required></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+  
+        <div style="margin: auto;" *ngIf="equipment">
+          <button mat-raised-button color="primary" type="submit">Guardar Cambios</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
