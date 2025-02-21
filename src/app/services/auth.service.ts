@@ -24,8 +24,17 @@ interface LoginResponse {
 export class AuthService {
   private authState = new BehaviorSubject<boolean>(this.getAuthState()); // Inicializar con el estado persistido
   authState$ = this.authState.asObservable();
+  private userSubject = new BehaviorSubject<any>(null);
+  public user$ = this.userSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+
+    const user = localStorage.getItem('user');
+    
+    if (user) {
+      this.userSubject.next(JSON.parse(user)); // Actualizar el estado con el usuario almacenado
+    }
+  }
 
   getToken(): string | null {
     return localStorage.getItem('token');
@@ -64,6 +73,7 @@ export class AuthService {
           localStorage.setItem('token', response.token);
           localStorage.setItem('user', JSON.stringify(response.user));
           this.setAuthState(true); // Persistir el estado
+          
           this.authState.next(true);
           return response;
         }),

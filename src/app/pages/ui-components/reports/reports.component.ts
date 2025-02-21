@@ -45,7 +45,7 @@ export class ReportsComponent {
   constructor(
     private reportsService: ReportsService,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   // Función para formatear la fecha al formato YYYY-MM-DD HH:mm:ss
   formatDate(date: Date): string {
@@ -62,52 +62,78 @@ export class ReportsComponent {
     if (this.reportForm.valid) {
       const fechaInicio = this.reportForm.get('fechaInicio')?.value;
       const fechaFin = this.reportForm.get('fechaFin')?.value;
-  
-      // Verificar que las fechas no sean null o undefined
+
       if (!fechaInicio || !fechaFin) {
         this.snackBar.open('Las fechas de inicio y fin son requeridas', 'Cerrar', { duration: 5000 });
         return;
       }
-  
-      // Formatear las fechas al formato YYYY-MM-DD HH:mm:ss
+
       const fechaInicioFormateada = this.formatDate(new Date(fechaInicio));
       const fechaFinFormateada = this.formatDate(new Date(fechaFin));
-  
-      // Obtener todos los reportes
+
+      // Obtener el reporte de equipos reparados
       this.reportsService.getReporteReparados(fechaInicioFormateada, fechaFinFormateada).subscribe({
         next: (response) => {
-          this.reparadosData = [response];
+          if (response.mensaje === 'No se encontraron datos de equipos reparados') {
+            this.snackBar.open(response.mensaje, 'Cerrar', { duration: 5000 });
+            this.reparadosData = [];
+            
+          } else {
+            this.reparadosData = [response];
+          }
         },
         error: (error) => {
           this.snackBar.open('Error al obtener el reporte de reparados', 'Cerrar', { duration: 5000 });
-        }
+          this.reparadosData = [];
+        },
       });
-  
+
+      // Obtener el tiempo promedio de reparación
       this.reportsService.getTiempoReparacion(fechaInicioFormateada, fechaFinFormateada).subscribe({
         next: (response) => {
-          this.tiempoReparacionData = [response];
+          if (response.mensaje === 'No se encontraron datos de tiempo de reparación') {
+            this.snackBar.open(response.mensaje, 'Cerrar', { duration: 5000 });
+            this.tiempoReparacionData = [];
+          } else {
+            this.tiempoReparacionData = [response];
+          }
         },
         error: (error) => {
           this.snackBar.open('Error al obtener el tiempo de reparación', 'Cerrar', { duration: 5000 });
-        }
+          this.tiempoReparacionData = [];
+        },
       });
-  
+
+      // Obtener el reporte de reubicados
       this.reportsService.getReporteReubicados(fechaInicioFormateada, fechaFinFormateada).subscribe({
         next: (response) => {
-          this.reubicadosData = [response];
+          if (response.mensaje === 'No se encontraron datos de reubicados') {
+            this.snackBar.open(response.mensaje, 'Cerrar', { duration: 5000 });
+            this.reubicadosData = []; // Asignar un array vacío
+          } else {
+            this.reubicadosData = response; // Asignar directamente la respuesta
+          }
         },
         error: (error) => {
           this.snackBar.open('Error al obtener el reporte de reubicados', 'Cerrar', { duration: 5000 });
-        }
+          this.reubicadosData = []; // Asignar un array vacío en caso de error
+        },
       });
-  
+
+      // Obtener el reporte de retiros para reparación
       this.reportsService.getRetirosReparacion(fechaInicioFormateada, fechaFinFormateada).subscribe({
         next: (response) => {
-          this.retirosReparacionData = response;
+          if (response.mensaje === 'No se encontraron datos de retiros para reparación') {
+            this.snackBar.open(response.mensaje, 'Cerrar', { duration: 5000 });
+            this.retirosReparacionData = []; // Asignar un array vacío
+          } else {
+            this.retirosReparacionData = response; // Asignar directamente la respuesta
+          }
         },
         error: (error) => {
           this.snackBar.open('Error al obtener el reporte de retiros para reparación', 'Cerrar', { duration: 5000 });
-        }
+          this.retirosReparacionData = []; // Asignar un array vacío en caso de error
+        },
       });
     }
   }

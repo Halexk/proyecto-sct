@@ -9,7 +9,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { NavItem } from './nav-item';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { NavService } from '../../../../services/nav.service';
 import {
   animate,
@@ -24,6 +24,8 @@ import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { filter } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-nav-item',
@@ -41,45 +43,59 @@ import { ChangeDetectionStrategy } from '@angular/core';
       ),
     ]),
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush, // Añadir esta línea
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppNavItemComponent implements OnChanges, OnInit {
+export class AppNavItemComponent implements OnInit {
   @Output() toggleMobileLink: any = new EventEmitter<void>();
   @Output() notify: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  expanded: any = false;
-  disabled: any = false;
-  twoLines: any = false;
+  expanded: boolean = false; // Estado de expansión para este ítem
+  disabled: boolean = false;
+  twoLines: boolean = false;
   @HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
   @Input() item: NavItem | any;
-  @Input() depth: any;
+  @Input() depth: number;
   isAuthenticated: boolean;
+  isActive: boolean = false; // Estado de activación para este ítem
 
-  constructor(public navService: NavService, public router: Router, public authService: AuthService,private cdr: ChangeDetectorRef) {
+  constructor(
+    public navService: NavService,
+    public router: Router,
+    public authService: AuthService,
+    private cdr: ChangeDetectorRef
+  ) {
     if (this.depth === undefined) {
       this.depth = 0;
     }
   }
-  navItems: NavItem[] = [];
 
   ngOnInit(): void {
+    // Verificar la ruta actual al inicializar el componente
+    this.checkActiveRoute(this.router.url);
+  
+    // Suscribirse a los cambios de ruta (solo eventos NavigationEnd)
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+      )
+      .subscribe((event: NavigationEnd) => {
+        this.checkActiveRoute(event.url);
+      });
+  
+    // Suscribirse al estado de autenticación
     this.authService.authState$.subscribe((state) => {
       this.isAuthenticated = state;
-      console.log('AuthState:', state);
-      console.log('isAuthenticated:', this.isAuthenticated);
       this.cdr.detectChanges(); // Forzar la detección de cambios
     });
   }
-
-
-
-  ngOnChanges() {
-    this.navService.currentUrl.subscribe((url: string) => {
-      if (this.item.route && url) {
-        this.expanded = url.indexOf(`/${this.item.route}`) === 0;
-        this.ariaExpanded = this.expanded;
-      }
-    });
+  // Verificar si la ruta actual coincide con la ruta del ítem
+  checkActiveRoute(url: string): void {
+    if (this.item.route) {
+      this.isActive = url.startsWith(`/${this.item.route}`);
+      this.expanded = this.isActive; // Expandir si el ítem está activo
+      this.ariaExpanded = this.expanded;
+      this.cdr.detectChanges(); // Forzar la detección de cambios
+    }
   }
 
   isUiComponentRelated(item: NavItem | any): boolean {
@@ -91,32 +107,24 @@ export class AppNavItemComponent implements OnChanges, OnInit {
   }
 
   isMenuItemActive(item: NavItem | any): boolean {
-    return this.router.isActive(item.route, true) && (!this.isUiComponentRelated(item) || this.isAuthenticated);
+    return this.isActive && (!this.isUiComponentRelated(item) || this.isAuthenticated);
   }
 
-  onItemSelected(item: NavItem) {
+  onItemSelected(item: NavItem): void {
     if (!item.children || !item.children.length) {
       this.router.navigate([item.route]);
-      
     }
     if (item.children && item.children.length) {
-      this.expanded = !this.expanded;
+      this.expanded = !this.expanded; // Alternar estado de expansión
     }
-    //scroll
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth',
-    });
-    if (!this.expanded){
-    if (window.innerWidth < 1024) {
+    window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+    if (!this.expanded && window.innerWidth < 1024) {
       this.notify.emit();
     }
   }
-  }
 
-  onSubItemSelected(item: NavItem) {
-    if (!item.children || !item.children.length){
+  onSubItemSelected(item: NavItem): void {
+    if (!item.children || !item.children.length) {
       if (this.expanded && window.innerWidth < 1024) {
         this.notify.emit();
       }
