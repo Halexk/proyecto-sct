@@ -9,7 +9,6 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { MaterialModule } from '../../../material.module';
 import { AuthService } from 'src/app/services/auth.service';
-import { User } from 'src/app/models/user';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -19,12 +18,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './side-register.component.html',
 })
 export class AppSideRegisterComponent {
-
-
-  newUser: User;
-
-
-
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -32,8 +25,10 @@ export class AppSideRegisterComponent {
   ) {}
 
   form = new FormGroup({
-    id: new FormControl('', [Validators.required, Validators.minLength(7)]),
-    email: new FormControl('', [Validators.required]),
+    nombre: new FormControl('', [Validators.required]),
+    apellido: new FormControl('', [Validators.required]),
+    dni: new FormControl('', [Validators.required, Validators.minLength(7)]),
+    cargo: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
 
@@ -41,28 +36,31 @@ export class AppSideRegisterComponent {
     return this.form.controls;
   }
 
-  submit() { 
-    this.newUser = {
-      id: this.form.value.id as string,
-      email: this.form.value.email as string,
-      password:this.form.value.password as string
-    };
-    this.authService.register(this.newUser)
-      .subscribe(
+  submit() {
+    if (this.form.valid) {
+      const newUser = {
+        nombre: this.form.value.nombre as string,
+        apellido: this.form.value.apellido as string,
+        dni: this.form.value.dni as string,
+        cargo: this.form.value.cargo as string,
+        password: this.form.value.password as string,
+      };
+
+      this.authService.register(newUser).subscribe(
         (response) => {
-          console.log('Registration successful:', response); 
+          console.log('Registro exitoso:', response);
+          this._snackBar.open('Registro exitoso. Por favor, inicia sesión.', 'Cerrar', { duration: 5000 });
           this.router.navigate(['/authentication/login']);
         },
         (error) => {
-          console.error('Registration failed:', error);
-            // Manejar errores
-             if (error.error === 'Duplicate ID or email') {
-             this._snackBar.open('El CI o el correo electrónico ya están en uso.', 'Cerrar');
-              } else {
-              this._snackBar.open('Error al registrarse. Por favor, inténtalo de nuevo.', 'Cerrar');
-             }
-      
+          console.error('Error en el registro:', error);
+          if (error.error === 'El DNI ya está registrado') {
+            this._snackBar.open('El DNI ya está registrado.', 'Cerrar', { duration: 5000 });
+          } else {
+            this._snackBar.open('Error al registrarse. Por favor, inténtalo de nuevo.', 'Cerrar', { duration: 5000 });
+          }
         }
       );
+    }
   }
 }

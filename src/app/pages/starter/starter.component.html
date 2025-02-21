@@ -1,20 +1,38 @@
-<div class="row">
-  <div class="col-lg-8">
-    <app-profit-expenses></app-profit-expenses>
-  </div>
-  <div class="col-lg-4">
-    <app-traffic-distribution></app-traffic-distribution>
-    <app-product-sales></app-product-sales>
-  </div>
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title class="m-b-0">Dashboard</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="b-t-1">
+<div class="search-container">
+  <mat-form-field appearance="outline">
+    <mat-label>Buscar por Bien Nacional</mat-label>
+    <input matInput [(ngModel)]="bienNacional" placeholder="Ingrese el Bien Nacional" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="buscarEquipo()">Buscar</button>
 </div>
 
-<div class="row">
-  <div class="col-lg-4">
-    <app-upcoming-schedules></app-upcoming-schedules>
-  </div>
-  <div class="col-lg-8">
-    <app-top-employees></app-top-employees>
-  </div>
+<div *ngIf="equipoEncontrado" class="result-container">
+  <mat-card class="b-1 shadow-none">
+    <mat-card-header>
+      <mat-card-title>Información del Equipo</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p><strong>Bien Nacional:</strong> {{ equipoEncontrado.bienNacional }}</p>
+      <p><strong>Tipo de Equipo:</strong> {{ equipoEncontrado.tipoEquipo }}</p>
+      <p><strong>Número de Serie:</strong> {{ equipoEncontrado.numeroSerie }}</p>
+      <p><strong>Estado:</strong> {{ equipoEncontrado.estado }}</p>
+      <p><strong>Ubicación:</strong> {{ equipoEncontrado.ubicacion }}</p>
+      <p><strong>Asignación:</strong> {{ equipoEncontrado.asignacion }}</p>
+    </mat-card-content>
+  </mat-card>
 </div>
 
-<app-blog></app-blog>
+<div *ngIf="error" class="error-message">
+  <mat-card>
+    <mat-card-content>
+      <p class="error-text">{{ error }}</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+</mat-card-content>
+</mat-card>

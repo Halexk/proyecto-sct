@@ -1,14 +1,12 @@
 import { Routes } from '@angular/router';
 import { BlankComponent } from './layouts/blank/blank.component';
 import { FullComponent } from './layouts/full/full.component';
-import { AuthGuard } from './services/auth.guard.service'; 
-
+import { AuthGuard } from './services/auth.guard.service';
 
 export const routes: Routes = [
   {
     path: '',
     component: FullComponent,
-    canActivate: [AuthGuard], // Agrega el guard aquí
     children: [
       {
         path: '',
@@ -20,6 +18,13 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./pages/pages.routes').then((m) => m.PagesRoutes),
       },
+    ],
+  },
+  {
+    path: '',
+    component: FullComponent,
+    canActivate: [AuthGuard], // Proteger estas rutas con AuthGuard
+    children: [
       {
         path: 'ui-components',
         loadChildren: () =>
@@ -49,6 +54,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'authentication/error',
+    redirectTo: '/dashboard', // Redirige cualquier ruta no válida al dashboard
   },
 ];

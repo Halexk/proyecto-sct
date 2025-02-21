@@ -6,6 +6,7 @@ import {
   OnChanges,
   Output,
   EventEmitter,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { NavItem } from './nav-item';
 import { Router } from '@angular/router';
@@ -21,6 +22,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
+import { AuthService } from 'src/app/services/auth.service';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-nav-item',
@@ -38,8 +41,9 @@ import { CommonModule } from '@angular/common';
       ),
     ]),
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush, // Añadir esta línea
 })
-export class AppNavItemComponent implements OnChanges {
+export class AppNavItemComponent implements OnChanges, OnInit {
   @Output() toggleMobileLink: any = new EventEmitter<void>();
   @Output() notify: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -49,22 +53,45 @@ export class AppNavItemComponent implements OnChanges {
   @HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
   @Input() item: NavItem | any;
   @Input() depth: any;
+  isAuthenticated: boolean;
 
-  constructor(public navService: NavService, public router: Router) {
+  constructor(public navService: NavService, public router: Router, public authService: AuthService,private cdr: ChangeDetectorRef) {
     if (this.depth === undefined) {
       this.depth = 0;
     }
   }
+  navItems: NavItem[] = [];
+
+  ngOnInit(): void {
+    this.authService.authState$.subscribe((state) => {
+      this.isAuthenticated = state;
+      console.log('AuthState:', state);
+      console.log('isAuthenticated:', this.isAuthenticated);
+      this.cdr.detectChanges(); // Forzar la detección de cambios
+    });
+  }
+
+
 
   ngOnChanges() {
     this.navService.currentUrl.subscribe((url: string) => {
       if (this.item.route && url) {
-        // console.log(`Checking '/${this.item.route}' against '${url}'`);
         this.expanded = url.indexOf(`/${this.item.route}`) === 0;
         this.ariaExpanded = this.expanded;
-        //console.log(`${this.item.route} is expanded: ${this.expanded}`);
       }
     });
+  }
+
+  isUiComponentRelated(item: NavItem | any): boolean {
+    return item.navCap === 'Ui Components' || (item.route && item.route.startsWith('/ui-components/'));
+  }
+
+  isAuthRelated(item: NavItem | any): boolean {
+    return item.navCap === 'Auth' || (item.route && (item.route === '/authentication/login' || item.route === '/authentication/register'));
+  }
+
+  isMenuItemActive(item: NavItem | any): boolean {
+    return this.router.isActive(item.route, true) && (!this.isUiComponentRelated(item) || this.isAuthenticated);
   }
 
   onItemSelected(item: NavItem) {

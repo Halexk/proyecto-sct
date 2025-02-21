@@ -1,90 +1,104 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { User } from '../models/user'; // Import your user model
+import { Router } from '@angular/router';
+import { HttpHeaders } from '@angular/common/http';
 
-const apiUrl = 'http://127.0.0.1:5000'; // Replace with your API base URL
+const apiUrl = 'http://localhost:3000/api/users'; // URL del backend
+
+interface LoginResponse {
+  token: string;
+  user: {
+    id: number;
+    nombre: string;
+    apellido: string;
+    dni: string;
+    cargo: string;
+  };
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private authState = new BehaviorSubject<boolean>(this.getAuthState()); // Inicializar con el estado persistido
+  authState$ = this.authState.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) {}
 
   getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-
   isLoggedIn(): boolean {
-    // // Verificar si hay un token válido almacenado (por ejemplo, en localStorage)
-    // const token = this.getToken(); 
-    // if (token) {
-    //   // Puedes agregar lógica adicional para verificar la validez del token (por ejemplo, decodificarlo y verificar la fecha de expiración)
-    //   return true; 
-    // }
-    // return false;
-    return true
+    return !!this.getToken();
+  }
+
+  isAuthenticated(): boolean {
+    const isAuth = this.getAuthState(); // Usar el estado persistido
+    this.authState.next(isAuth);
+    return isAuth;
   }
 
   register(user: any): Observable<any> {
-    return this.http.post(`${apiUrl}/register`, user) 
+    return this.http.post(`${apiUrl}/register`, user)
       .pipe(
         map(response => {
-          return response; 
+          return response;
         }),
         catchError(error => {
-          if (error.error && error.error.message === 'Duplicate ID or email') {
-            return throwError({ error: 'Duplicate ID or email' }); 
+          if (error.error && error.error.error === 'El DNI ya está registrado') {
+            return throwError({ error: 'El DNI ya está registrado' });
           } else {
-            return throwError(error); 
+            return throwError(error);
           }
         })
       );
   }
 
-  login(credentials: { id: string; password: string }): Observable<any> {
-    return this.http.post(`${apiUrl}/login`, credentials)
+  login(credentials: { dni: string; password: string }): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${apiUrl}/login`, credentials)
       .pipe(
         map(response => {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('user', JSON.stringify(response.user));
+          this.setAuthState(true); // Persistir el estado
+          this.authState.next(true);
           return response;
         }),
         catchError(this.handleError)
       );
   }
 
-
+  private handleError(error: any) {
+    if (error.status === 401) {
+      this.logout();
+      this.router.navigate(['/authentication/login']);
+    }
+    return throwError('Something bad happened; please try again later.');
+  }
 
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.setAuthState(false); // Persistir el estado
+    this.authState.next(false);
   }
 
+  getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
 
-  // registerOrLogin(provider: string, providerId: string, email?: string, name?: string): Observable<any> {
-  //   const params = { provider, provider_id: providerId };
-  //   if (email) {
-  //     params['email'] = email;
-  //   }
-  //   if (name) {
-  //     params['name'] = name;
-  //   }
-  //   return this.http.get(`${apiUrl}/register_or_login`, { params })
-  //     .pipe(
-  //       catchError(this.handleError)
-  //     );
-  // }
+  private setAuthState(state: boolean) {
+    localStorage.setItem('authState', JSON.stringify(state));
+  }
 
-  private handleError(error: any) {
-    if (error.error instanceof ErrorEvent) {
-      // Client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error.message);
-    } else {
-      // Backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
-      console.error(`Backend returned code ${error.status}, body was: ${error.error}`);
-    }
-    return throwError('Something bad happened; please try again later.');
+  private getAuthState(): boolean {
+    const authState = localStorage.getItem('authState');
+    return authState ? JSON.parse(authState) : false;
   }
 }
