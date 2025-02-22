@@ -17,13 +17,14 @@ import { AuthService } from 'src/app/services/auth.service';
   standalone: true,
   imports: [RouterModule, CommonModule, NgScrollbarModule, TablerIconsModule, MaterialModule],
   templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class HeaderComponent {
 
     constructor(
       private router: Router,
-      private authService: AuthService,
+      public authService: AuthService
     ) { }
   
 
@@ -38,4 +39,15 @@ export class HeaderComponent {
     this.authService.logout();
     this.router.navigate(['/dashboard']); 
   }
+
+
+  getUserInitials(): string {
+    const user = localStorage.getItem('user');
+    if (user) {
+      const userData = JSON.parse(user);
+      return userData.nombre.charAt(0) + userData.apellido.charAt(0);
+    }
+    return 'UA'; // Iniciales por defecto si no hay usuario
+  }
 }
+  

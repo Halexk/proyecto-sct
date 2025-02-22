@@ -41,6 +41,8 @@ export class StarterComponent {
 
   constructor(private equipmentService: EquipmentService) {} // Inyectar el servicio
 
+
+
   // Método para buscar el equipo
   buscarEquipo() {
     this.equipoEncontrado = null; // Reiniciar el equipo encontrado
@@ -71,4 +73,10 @@ export class StarterComponent {
       }
     );
   }
+  onKeyPress = (event:any) => {
+    if (event.key === 'Enter') {
+      this.buscarEquipo();
+    }
+  };
 }
+

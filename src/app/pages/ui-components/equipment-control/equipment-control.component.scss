@@ -17,3 +17,66 @@
   button[mat-raised-button] {
     margin-top: 16px;
   }
+
+  .cardWithShadow {
+    margin: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .theme-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+  }
+  
+  .mat-form-field {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -8px;
+  }
+  
+  .col-sm-6, .col-lg-4 {
+    padding: 8px;
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+  
+  @media (min-width: 600px) {
+    .col-sm-6 {
+      flex: 1 1 50%;
+      max-width: 50%;
+    }
+  }
+  
+  @media (min-width: 960px) {
+    .col-lg-4 {
+      flex: 1 1 33.333%;
+      max-width: 33.333%;
+    }
+  }
+  
+  .search-container {
+    display: flex;
+    align-items: flex-end; /* Alinea el botón con el campo */
+    gap: 16px; /* Espacio entre el campo y el botón */
+  }
+  
+  .search-field {
+    flex: 1; /* El campo ocupa el espacio disponible */
+  }
+  
+  .search-button {
+    margin-bottom: 16px; /* Ajusta el margen inferior para alinearlo con el campo */
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: flex-end; /* Alinea los botones a la derecha */
+    gap: 16px; /* Espacio entre los botones */
+    margin-top: 24px; /* Espacio superior */
+  }

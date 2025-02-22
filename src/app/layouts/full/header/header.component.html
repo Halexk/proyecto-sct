@@ -6,9 +6,9 @@
   </button>
 
 
-  <button mat-icon-button aria-label="Notifications">
+  <!-- <button mat-icon-button aria-label="Notifications">
     <i-tabler class="d-flex" name="bell" matBadge="1" matBadgeColor="primary"></i-tabler>
-  </button>
+  </button> -->
 
 
   <span class="flex-1-auto"></span>
@@ -20,9 +20,15 @@
     target="_blank" class="d-flex justify-content-center">
     Download Free
   </a> -->
-  <button class="m-l-10" mat-icon-button [matMenuTriggerFor]="profilemenu" aria-label="Notifications">
-    <img src="/assets/images/profile/user-1.jpg" class="rounded-circle object-cover" width="35" />
-  </button>
+
+
+<!-- En header.component.html -->
+<button class="m-l-10" mat-icon-button [matMenuTriggerFor]="profilemenu" aria-label="Notifications">
+  <div class="initials-circle" *ngIf="authService.isLoggedIn()">
+    <span class="initials-text">{{getUserInitials()}}</span>
+  </div>
+</button>
+
   <mat-menu #profilemenu="matMenu" xPosition="before" class="cardWithShadow">
     <!-- <button mat-menu-item>
       <mat-icon class="d-flex align-items-center"><i-tabler name="user" class="icon-18 d-flex"></i-tabler></mat-icon>My
@@ -37,7 +43,7 @@
           class="icon-18 d-flex"></i-tabler></mat-icon>My Task
     </button> -->
 
-    <div class="p-x-12 m-t-12">
+    <div class="p-x-12 ">
       <button mat-stroked-button color="primary" class="w-100" (click)="logout()">Logout</button>
     </div>
   </mat-menu>

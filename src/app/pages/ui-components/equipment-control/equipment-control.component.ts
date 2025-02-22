@@ -62,6 +62,11 @@ export class EquipmentControlComponent {
     });
   }
 
+  resetSearch() {
+    this.equipment = null;
+    this.editForm.reset();
+  }
+
   onSubmit() {
     if (this.editForm.valid) {
       const changes = this.editForm.value;

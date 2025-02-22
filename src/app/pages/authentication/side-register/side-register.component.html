@@ -1,3 +1,4 @@
+<!-- En side-register.component.html -->
 <div class="blank-layout-container justify-content-center">
   <div class="auth-wrapper">
     <div class="position-relative shaper-wrapper">
@@ -24,79 +25,55 @@
                       <!-- Nombre -->
                       <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Nombre</mat-label>
                       <mat-form-field appearance="outline" class="w-100" color="primary">
-                        <input matInput formControlName="nombre" />
-                        @if(f['nombre'].touched && f['nombre'].invalid) {
-                        <mat-hint class="m-b-16 error-msg">
-                          @if(f['nombre'].errors && f['nombre'].errors['required']) {
-                          <div class="text-error">El nombre es requerido.</div>
-                          }
-                        </mat-hint>
-                        }
+                        <input matInput formControlName="nombre" (blur)="convertToUpperCase(form.get('nombre'))" />
+                        <app-error-messages [control]="f['nombre']"></app-error-messages>
                       </mat-form-field>
 
                       <!-- Apellido -->
                       <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Apellido</mat-label>
                       <mat-form-field appearance="outline" class="w-100" color="primary">
-                        <input matInput formControlName="apellido" />
-                        @if(f['apellido'].touched && f['apellido'].invalid) {
-                        <mat-hint class="m-b-16 error-msg">
-                          @if(f['apellido'].errors && f['apellido'].errors['required']) {
-                          <div class="text-error">El apellido es requerido.</div>
-                          }
-                        </mat-hint>
-                        }
+                        <input matInput formControlName="apellido" (blur)="convertToUpperCase(form.get('apellido'))" />
+                        <app-error-messages [control]="f['apellido']"></app-error-messages>
                       </mat-form-field>
 
                       <!-- DNI -->
                       <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">DNI</mat-label>
                       <mat-form-field appearance="outline" class="w-100" color="primary">
                         <input matInput formControlName="dni" />
-                        @if(f['dni'].touched && f['dni'].invalid) {
-                        <mat-hint class="m-b-16 error-msg">
-                          @if(f['dni'].errors && f['dni'].errors['required']) {
-                          <div class="text-error">El DNI es requerido.</div>
-                          }
-                          @if(f['dni'].errors && f['dni'].errors['minlength']) {
-                          <div class="text-error">El DNI debe tener al menos 7 caracteres.</div>
-                          }
-                        </mat-hint>
-                        }
+                        <app-error-messages [control]="f['dni']"></app-error-messages>
+                      </mat-form-field>
+
+                      <!-- Email -->
+                      <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Correo electrónico</mat-label>
+                      <mat-form-field appearance="outline" class="w-100" color="primary">
+                        <input matInput formControlName="email" />
+                        <app-error-messages [control]="f['email']"></app-error-messages>
                       </mat-form-field>
 
                       <!-- Cargo -->
                       <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Cargo</mat-label>
                       <mat-form-field appearance="outline" class="w-100" color="primary">
                         <input matInput formControlName="cargo" />
-                        @if(f['cargo'].touched && f['cargo'].invalid) {
-                        <mat-hint class="m-b-16 error-msg">
-                          @if(f['cargo'].errors && f['cargo'].errors['required']) {
-                          <div class="text-error">El cargo es requerido.</div>
-                          }
-                        </mat-hint>
-                        }
+                        <app-error-messages [control]="f['cargo']"></app-error-messages>
                       </mat-form-field>
 
                       <!-- Contraseña -->
                       <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Contraseña</mat-label>
                       <mat-form-field appearance="outline" class="w-100" color="primary">
                         <input matInput type="password" formControlName="password" />
-                        @if(f['password'].touched && f['password'].invalid) {
-                        <mat-hint class="m-b-16 error-msg">
-                          @if(f['password'].errors && f['password'].errors['required']) {
-                          <div class="text-error">La contraseña es requerida.</div>
-                          }
-                        </mat-hint>
-                        }
+                        <app-error-messages [control]="f['password']"></app-error-messages>
                       </mat-form-field>
 
                       <!-- Botón de registro -->
                       <button mat-flat-button color="primary" class="w-100" [disabled]="!form.valid">
                         Registrarse
                       </button>
+
                     </form>
 
                     <span class="d-block f-w-500 d-block m-t-24">¿Ya tienes una cuenta?
-                      <a [routerLink]="['/authentication/login']" class="text-decoration-none text-primary f-w-500 f-s-14">
+                      <a [routerLink]="['/authentication/login']"
+                        class="text-decoration-none text-primary f-w-500 f-s-14">
                         Inicia sesión
                       </a>
                     </span>
