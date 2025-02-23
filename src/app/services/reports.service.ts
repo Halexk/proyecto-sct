@@ -68,4 +68,22 @@ export class ReportsService {
       })
     );
   }
+  getReportesCompletos(fechaInicio: string, fechaFin: string): Observable<any> {
+    const headers = this.authService.getHeaders();
+    return this.http.get(`${this.apiUrl}/reportes-completos`, {
+      params: { fechaInicio, fechaFin },
+      headers: headers,
+    }).pipe(
+      catchError((error) => {
+        console.error('Error en la solicitud:', error);
+        return of(null);
+      }),
+      map((response) => {
+        if (!response || Object.keys(response).length === 0) {
+          return { mensaje: 'No se encontraron reportes en el período especificado' };
+        }
+        return response;
+      })
+    );
+  }
 }

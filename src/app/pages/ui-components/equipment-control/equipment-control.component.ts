@@ -39,7 +39,45 @@ export class EquipmentControlComponent {
   constructor(
     private equipmentService: EquipmentService,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+        // Escuchar cambios en el campo "motivo"
+        this.editForm.get('motivo')?.valueChanges.subscribe((motivo) => {
+          this.actualizarEstadoSegunMotivo(motivo);
+        });
+      }
+    
+      // Método para actualizar el estado según el motivo seleccionado
+      actualizarEstadoSegunMotivo(motivo: string | null) {
+        const estadoControl = this.editForm.get('estado');
+        if (motivo === 'reparacion') {  
+          estadoControl?.setValue('reparacion');
+          estadoControl?.disable(); // Deshabilitar el control
+        } else if (motivo === 'entrega') {  
+          estadoControl?.setValue('operativo');
+          estadoControl?.disable(); // Deshabilitar el control
+        } else if (motivo === 'esperaEntrega') {  
+          estadoControl?.setValue('operativo');
+          estadoControl?.disable(); // Deshabilitar el control
+        } else if (motivo === 'esperaPieza') {  
+          estadoControl?.setValue('inoperativo');
+          estadoControl?.disable(); // Deshabilitar el control
+        } else if (motivo === 'esperaPieza') {  
+          estadoControl?.setValue('inoperativo');
+          estadoControl?.disable(); // Deshabilitar el control
+        } else if (motivo === 'reubicacion') {  
+          estadoControl?.setValue('operativo');
+          estadoControl?.disable(); // Deshabilitar el control
+        } else if (motivo === 'reasignacion') {  
+          estadoControl?.setValue('operativo');
+          estadoControl?.disable(); // Deshabilitar el control
+        } else if (motivo === 'desincorporacion') {  
+          estadoControl?.setValue('inoperativo');
+          estadoControl?.disable(); // Deshabilitar el control
+        } 
+        
+  }
+
+  
 
   searchEquipment() {
     const bienNacional = this.editForm.get('bienNacional')?.value;

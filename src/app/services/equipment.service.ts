@@ -50,3 +50,5 @@ export class EquipmentService {
     return this.http.put(`${this.apiUrl}/${id}/status`, body, { headers });
   }
 }
+
+

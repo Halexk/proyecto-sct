@@ -23,6 +23,7 @@
       <p><strong>Estado:</strong> {{ equipoEncontrado.estado }}</p>
       <p><strong>Ubicación:</strong> {{ equipoEncontrado.ubicacion }}</p>
       <p><strong>Asignación:</strong> {{ equipoEncontrado.asignacion }}</p>
+      <p *ngIf="equipoEncontrado.ultimoMotivo"><strong>Detalles:</strong> {{ equipoEncontrado.ultimoMotivo }}</p>
     </mat-card-content>
   </mat-card>
 </div>
