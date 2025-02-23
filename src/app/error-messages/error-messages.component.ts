@@ -4,6 +4,7 @@ import { AbstractControl } from '@angular/forms';
 
 @Component({
     selector: 'app-error-messages',
+    standalone: true,
     template: `
 <div class="error-messages" *ngIf="control?.invalid && control?.touched">
     <div class="text-error" *ngIf="control?.errors?.required">
