@@ -85,7 +85,7 @@ export class StarterComponent {
       case 'inoperativo':
         return 'Inoperativo';
       case 'operativo':
-        return 'Inoperativo';
+        return 'Operativo';
       default:
         return motivo; // Si no coincide con ningún caso, devolver el valor original
     }
