@@ -11,6 +11,7 @@ import { MatCard, MatCardModule } from '@angular/material/card';
 import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import 'jspdf-autotable';
 
 @Component({
   selector: 'app-reports',
@@ -64,6 +65,12 @@ export class ReportsComponent {
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+  formatDatepdf(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses van de 0 a 11
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`; // Solo año, mes y día
   }
 
   generarReporte() {
@@ -151,73 +158,99 @@ export class ReportsComponent {
   }
 
   async descargarPDF() {
+    const fechaInicio = this.reportForm.get('fechaInicio')?.value;
+    const fechaFin = this.reportForm.get('fechaFin')?.value;
+    if (!fechaInicio || !fechaFin) {
+      this.snackBar.open('Las fechas de inicio y fin son requeridas', 'Cerrar', { duration: 5000 });
+      return;
+    }
+    const fechaInicioFormateada = this.formatDatepdf(new Date(fechaInicio));
+    const fechaFinFormateada = this.formatDatepdf(new Date(fechaFin));
+
+
     const doc = new jsPDF('p', 'mm', 'a4');
   
     // Título del reporte
     doc.setFontSize(18);
-    doc.text('Reporte Completo', 10, 10);
+    doc.text(`Reporte Completo ${fechaFinFormateada}  ${fechaInicioFormateada}`, 10, 20);
   
-    // Declarar la variable y
-    let y = 20;
+    // Datos para la tabla de reportes completos
+    const reportesTableData = this.reportesCompletos.map((reporte, index) => [
+      index + 1, // Número de reporte
+      reporte.bienNacional,
+      reporte.estado_anterior,
+      reporte.estado_nuevo,
+      reporte.ubicacion_anterior,
+      reporte.ubicacion_nueva,
+      reporte.motivo,
+      reporte.observacion,
+      new Date(reporte.created_at).toLocaleString(), // Fecha formateada
+    ]);
   
-    // Función para verificar si se necesita una nueva página
-    const checkPageBreak = (increment: number) => {
-      if (y + increment > 280) { // Si el contenido supera el límite de la página
-        doc.addPage(); // Agrega una nueva página
-        y = 20; // Reinicia la posición vertical
-      }
-    };
+    // Columnas de la tabla de reportes completos
+    const reportesTableColumns = [
+      '#',
+      'Bien Nacional',
+      'Estado Anterior',
+      'Estado Nuevo',
+      'Ubicación Anterior',
+      'Ubicación Nueva',
+      'Motivo',
+      'Observación',
+      'Fecha',
+    ];
   
-    // Agregar los reportes completos
-    if (this.reportesCompletos.length > 0) {
-      doc.setFontSize(12);
-      this.reportesCompletos.forEach((reporte, index) => {
-        // Verificar si se necesita una nueva página antes de agregar el reporte
-        checkPageBreak(100); // Ajusta el valor según el espacio que ocupa cada reporte
+    // Agregar la tabla de reportes completos al PDF
+    (doc as any).autoTable({
+      head: [reportesTableColumns], // Encabezados de la tabla
+      body: reportesTableData, // Datos de la tabla
+      startY: 30, // Posición inicial de la tabla (debajo del título)
+      theme: 'grid', // Estilo de la tabla (grid, striped, plain)
+      styles: { fontSize: 10 }, // Tamaño de la fuente
+      headStyles: { fillColor: [41, 128, 185] }, // Color de fondo del encabezado
+    });
   
-        doc.text(`Reporte ${index + 1}:`, 10, y);
-        y += 10;
-        doc.text(`- Bien Nacional: ${reporte.bienNacional}`, 15, y);
-        y += 10;
-        doc.text(`- Estado Anterior: ${reporte.estado_anterior}`, 15, y);
-        y += 10;
-        doc.text(`- Estado Nuevo: ${reporte.estado_nuevo}`, 15, y);
-        y += 10;
-        doc.text(`- Ubicación Anterior: ${reporte.ubicacion_anterior}`, 15, y);
-        y += 10;
-        doc.text(`- Ubicación Nueva: ${reporte.ubicacion_nueva}`, 15, y);
-        y += 10;
-        doc.text(`- Motivo: ${reporte.motivo}`, 15, y);
-        y += 10;
-        doc.text(`- Observación: ${reporte.observacion}`, 15, y);
-        y += 10;
-        doc.text(`- Fecha: ${new Date(reporte.created_at).toLocaleString()}`, 15, y);
-        y += 15; // Espacio entre reportes
-      });
-    }
+    // Datos para la tabla de resumen
+    const resumenTableData = [];
   
-    // Agregar los datos de resumen (reparados, tiempoReparacion, etc.)
     if (this.reparadosData && this.reparadosData.length > 0) {
-      checkPageBreak(20); // Verificar si se necesita una nueva página antes de agregar el resumen
-      doc.text('Resumen de Equipos Reparados:', 10, y);
-      y += 10;
-      doc.text(`- Total Reparados: ${this.reparadosData[0].totalReparados}`, 15, y);
-      y += 15;
+      resumenTableData.push(['Equipos Reparados', this.reparadosData[0].totalReparados]);
     }
   
     if (this.tiempoReparacionData && this.tiempoReparacionData.length > 0) {
-      checkPageBreak(20); // Verificar si se necesita una nueva página antes de agregar el resumen
-      doc.text('Resumen de Tiempo Promedio de Reparación:', 10, y);
-      y += 10;
-      doc.text(`- Tiempo Promedio: ${this.tiempoReparacionData[0].tiempoPromedio} horas`, 15, y);
-      y += 15;
+      resumenTableData.push(['Tiempo Promedio de Reparación', `${this.tiempoReparacionData[0].tiempoPromedio} horas`]);
+    }
+  
+    // Columnas de la tabla de resumen
+    const resumenTableColumns = ['Resumen', 'Valor'];
+  
+    // Agregar la tabla de resumen al PDF
+    if (resumenTableData.length > 0) {
+      (doc as any).autoTable({
+        head: [resumenTableColumns], // Encabezados de la tabla
+        body: resumenTableData, // Datos de la tabla
+        startY: (doc as any).lastAutoTable.finalY + 20, // Posición inicial de la tabla (debajo de la tabla anterior)
+        theme: 'grid', // Estilo de la tabla
+        styles: { fontSize: 10 }, // Tamaño de la fuente
+        headStyles: { fillColor: [41, 128, 185] }, // Color de fondo del encabezado
+      });
     }
   
     // Guardar el PDF
-    doc.save('reporte-completo.pdf');
+    doc.save(`reporte-completo_${fechaFinFormateada}_${fechaInicioFormateada}.pdf`);
   }
 
   descargarExcel() {
+    const fechaInicio = this.reportForm.get('fechaInicio')?.value;
+    const fechaFin = this.reportForm.get('fechaFin')?.value;
+    if (!fechaInicio || !fechaFin) {
+      this.snackBar.open('Las fechas de inicio y fin son requeridas', 'Cerrar', { duration: 5000 });
+      return;
+    }
+    
+    const fechaInicioFormateada = this.formatDatepdf(new Date(fechaInicio));
+    const fechaFinFormateada = this.formatDatepdf(new Date(fechaFin));
+
     const wsData: any[] = [];
   
     // Agregar encabezados para los reportes completos
@@ -275,7 +308,7 @@ export class ReportsComponent {
     XLSX.utils.book_append_sheet(wb, ws, 'Reporte');
   
     // Escribir el archivo y descargarlo
-    XLSX.writeFile(wb, 'reporte-completo.xlsx');
+    XLSX.writeFile(wb, `reporte-completo_${fechaFinFormateada}_${fechaInicioFormateada}.xlsx`);
   }
 
   // Método para obtener los reportes completos
