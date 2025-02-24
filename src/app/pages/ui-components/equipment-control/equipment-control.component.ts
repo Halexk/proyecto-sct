@@ -51,31 +51,27 @@ export class EquipmentControlComponent {
         const estadoControl = this.editForm.get('estado');
         if (motivo === 'reparacion') {  
           estadoControl?.setValue('reparacion');
-          estadoControl?.disable(); // Deshabilitar el control
+          estadoControl?.disable(); // Cambia esto por readonly si es necesario
         } else if (motivo === 'entrega') {  
           estadoControl?.setValue('operativo');
-          estadoControl?.disable(); // Deshabilitar el control
+          estadoControl?.disable(); // Cambia esto por readonly si es necesario
         } else if (motivo === 'esperaEntrega') {  
           estadoControl?.setValue('operativo');
-          estadoControl?.disable(); // Deshabilitar el control
+          estadoControl?.disable(); // Cambia esto por readonly si es necesario
         } else if (motivo === 'esperaPieza') {  
           estadoControl?.setValue('inoperativo');
-          estadoControl?.disable(); // Deshabilitar el control
-        } else if (motivo === 'esperaPieza') {  
-          estadoControl?.setValue('inoperativo');
-          estadoControl?.disable(); // Deshabilitar el control
+          estadoControl?.disable(); // Cambia esto por readonly si es necesario
         } else if (motivo === 'reubicacion') {  
           estadoControl?.setValue('operativo');
-          estadoControl?.disable(); // Deshabilitar el control
+          estadoControl?.disable(); // Cambia esto por readonly si es necesario
         } else if (motivo === 'reasignacion') {  
           estadoControl?.setValue('operativo');
-          estadoControl?.disable(); // Deshabilitar el control
+          estadoControl?.disable(); // Cambia esto por readonly si es necesario
         } else if (motivo === 'desincorporacion') {  
           estadoControl?.setValue('inoperativo');
-          estadoControl?.disable(); // Deshabilitar el control
+          estadoControl?.disable(); // Cambia esto por readonly si es necesario
         } 
-        
-  }
+      }
 
   
 
@@ -107,7 +103,8 @@ export class EquipmentControlComponent {
 
   onSubmit() {
     if (this.editForm.valid) {
-      const changes = this.editForm.value;
+      const changes = this.editForm.getRawValue(); // Usa getRawValue() en lugar de value
+      console.log(changes); // Verifica que el estado esté incluido
       this.equipmentService.updateEquipmentStatus(this.equipment.id, changes).subscribe({
         next: (response) => {
           this.snackBar.open('Cambios guardados exitosamente', 'Cerrar', { duration: 5000 });
