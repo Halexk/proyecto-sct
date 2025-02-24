@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing'; // Importa HttpClientTestingModule
+import { EquipmentControlComponent } from './equipment-control.component';
+import { EquipmentService } from '../../../services/equipment.service';
 
-import { EquipmentControlComponent} from './equipment-control.component';
-
-describe('ReportsComponent', () => {
-  let component: EquipmentControlComponent;
-  let fixture: ComponentFixture<EquipmentControlComponent>;
-
+describe('EquipmentControlComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EquipmentControlComponent]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(EquipmentControlComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      imports: [
+        HttpClientTestingModule, // Agrega HttpClientTestingModule
+        EquipmentControlComponent, // Agrega el componente standalone aquí
+      ],
+      providers: [EquipmentService],
+    }).compileComponents();
   });
 
   it('should create', () => {
+    const fixture = TestBed.createComponent(EquipmentControlComponent);
+    const component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
 });
