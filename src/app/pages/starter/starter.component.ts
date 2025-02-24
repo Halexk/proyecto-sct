@@ -29,18 +29,18 @@ export class StarterComponent {
   equipoEncontrado: any = null; // Objeto para almacenar el equipo encontrado
   error: string = ''; // Mensaje de error
 
-  constructor(private equipmentService: EquipmentService) {}
+  constructor(private equipmentService: EquipmentService) { }
 
   // Método para buscar el equipo
   buscarEquipo() {
     this.equipoEncontrado = null; // Reiniciar el equipo encontrado
     this.error = ''; // Reiniciar el mensaje de error
-  
+
     if (!this.bienNacional) {
       this.error = 'Por favor, ingrese un Bien Nacional válido.';
       return;
     }
-  
+
     // Usar el servicio para buscar el equipo
     this.equipmentService.getEquipmentByBienNacional(this.bienNacional).subscribe(
       (data: any) => {
@@ -82,10 +82,10 @@ export class StarterComponent {
         return 'Espera por Pieza';
       case 'desincorporacion':
         return 'Desincorporación';
-        case 'inoperativo':
-          return 'Inoperativo';
-          case 'operativo':
-            return 'Inoperativo';
+      case 'inoperativo':
+        return 'Inoperativo';
+      case 'operativo':
+        return 'Inoperativo';
       default:
         return motivo; // Si no coincide con ningún caso, devolver el valor original
     }
