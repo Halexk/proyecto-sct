@@ -78,6 +78,12 @@
             <textarea matInput formControlName="observacion" required></textarea>
           </mat-form-field>
         </div>
+        <div class="col-sm-6 col-lg-4" *ngIf="equipment">
+          <mat-form-field>
+            <mat-label>Caracteristicas</mat-label>
+            <textarea matInput formControlName="caracteristicas" required></textarea>
+          </mat-form-field>
+        </div>
       </div>
 
       <!-- Botones de Guardar Cambios y Restablecer Búsqueda -->
