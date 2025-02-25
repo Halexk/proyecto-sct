@@ -23,7 +23,8 @@ export class AppEquipmentComponent {
     numeroSerie: new FormControl(null, Validators.required),
     estado: new FormControl('', Validators.required),
     ubicacion: new FormControl('', Validators.required),
-    asignacion: new FormControl('', Validators.required)
+    asignacion: new FormControl('', Validators.required),
+    caracteristicas: new FormControl('', Validators.required)
   });
 
   constructor(

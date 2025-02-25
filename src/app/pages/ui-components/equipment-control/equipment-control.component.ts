@@ -31,7 +31,8 @@ export class EquipmentControlComponent {
     ubicacion: new FormControl('', Validators.required),
     asignacion: new FormControl('', Validators.required),
     motivo: new FormControl('', Validators.required),
-    observacion: new FormControl('', Validators.required)
+    observacion: new FormControl('', Validators.required),
+    caracteristicas: new FormControl('', Validators.required)
   });
 
   equipment: any = null;
@@ -87,7 +88,8 @@ export class EquipmentControlComponent {
         this.editForm.patchValue({
           estado: response.estado,
           ubicacion: response.ubicacion,
-          asignacion: response.asignacion
+          asignacion: response.asignacion,
+          caracteristicas: response.caracteristicas
         });
       },
       error: (error) => {
