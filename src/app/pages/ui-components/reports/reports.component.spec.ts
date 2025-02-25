@@ -9,7 +9,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule } from '@angular/material/core';
-import { AppEquipmentStubComponent } from '../equipment/equipment.stub.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AuthService } from 'src/app/services/auth.service';
@@ -22,20 +21,18 @@ describe('ReportsComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [
-                ReportsComponent,
+                ReportsComponent, // ReportsComponent es standalone
                 HttpClientTestingModule,
                 MatSnackBarModule,
                 ReactiveFormsModule,
                 BrowserAnimationsModule,
                 MatNativeDateModule,
-                AppEquipmentStubComponent,
                 MatInputModule,
                 MatDatepickerModule,
             ],
             providers: [
-                ReportsService,
-                { provide: ReportsService, useClass: ReportsStubService },
-                { provide: EquipmentService, useClass: EquipmentStubService },
+                { provide: ReportsService, useClass: ReportsStubService }, // Usa el stub
+                { provide: EquipmentService, useClass: EquipmentStubService }, // Usa el stub
                 { provide: AuthService, useClass: AuthStubService }, // Usa el stub
             ]
         }).compileComponents();

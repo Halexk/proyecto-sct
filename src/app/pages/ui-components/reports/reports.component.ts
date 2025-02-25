@@ -54,7 +54,10 @@ export class ReportsComponent {
   constructor(
     private reportsService: ReportsService,
     private snackBar: MatSnackBar
-  ) { }
+  ) {
+    console.log('ReportsService:', reportsService); // Verifica que ReportsService no sea null
+    console.log('SnackBar:', snackBar); // Verifica que SnackBar no sea null
+   }
 
   // Función para formatear la fecha al formato YYYY-MM-DD HH:mm:ss
   formatDate(date: Date): string {
