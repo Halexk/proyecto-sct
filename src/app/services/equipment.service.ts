@@ -8,7 +8,7 @@ import { AuthService } from './auth.service'; // Importar AuthService
   providedIn: 'root'
 })
 export class EquipmentService {
-  private apiUrl = 'http://localhost:3000/api/equipments'; // URL del backend
+  private apiUrl = 'http://190.202.124.52:3000/api/equipments'; // URL del backend
 
   constructor(
     private http: HttpClient,

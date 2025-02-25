@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
 
-const apiUrl = 'http://localhost:3000/api/users'; // URL del backend
+const apiUrl = 'http://190.202.124.52:3000/api/users'; // URL del backend
 
 interface LoginResponse {
   token: string;

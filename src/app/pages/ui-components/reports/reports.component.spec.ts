@@ -3,8 +3,6 @@ import { ReportsComponent } from './reports.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReportsService } from 'src/app/services/reports.service';
 import { EquipmentService } from 'src/app/services/equipment.service';
-import { EquipmentStubService } from 'src/app/services/equipment.stub.service';
-import { AuthStubService } from 'src/app/services/auth.stub.service'; // Importa el stub
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,7 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AuthService } from 'src/app/services/auth.service';
-import { ReportsStubService } from 'src/app/services/reports.stub.service';
+
 
 describe('ReportsComponent', () => {
     let component: ReportsComponent;
@@ -31,9 +29,9 @@ describe('ReportsComponent', () => {
                 MatDatepickerModule,
             ],
             providers: [
-                { provide: ReportsService, useClass: ReportsStubService }, // Usa el stub
-                { provide: EquipmentService, useClass: EquipmentStubService }, // Usa el stub
-                { provide: AuthService, useClass: AuthStubService }, // Usa el stub
+                ReportsService,
+                EquipmentService, 
+                AuthService,
             ]
         }).compileComponents();
 
