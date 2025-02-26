@@ -1,61 +1,61 @@
 <mat-card class="cardWithShadow theme-card">
-  <mat-card-header>
-      <mat-card-title class="m-b-0">Registro de equipos</mat-card-title>
-  </mat-card-header>
-  <mat-card-content class="b-t-1">
-      <form [formGroup]="equipmentForm" (ngSubmit)="onSubmit()">
-          <div class="row">
-              <div class="col-sm-6 col-lg-4">
-                  <mat-form-field>
-                      <mat-label>Bien Nacional</mat-label>
-                      <input matInput formControlName="bienNacional" type="text">
-                  </mat-form-field>
-              </div>
-              <div class="col-sm-6 col-lg-4">
-                  <mat-form-field>
-                      <mat-label>Tipo de Equipo</mat-label>
-                      <input matInput formControlName="tipoEquipo" type="text">
-                  </mat-form-field>
-              </div>
-              <div class="col-sm-6 col-lg-4">
-                  <mat-form-field>
-                      <mat-label>Número de Serie</mat-label>
-                      <input matInput formControlName="numeroSerie" type="number">
-                  </mat-form-field>
-              </div>
-              <div class="col-sm-6 col-lg-4">
-                  <mat-form-field>
-                      <mat-label>Estado</mat-label>
-                      <mat-select formControlName="estado">
-                          <mat-option value="opertativo">Operativo</mat-option>
-                          <mat-option value="reparacion">Reparación</mat-option>
-                          <mat-option value="inoperativo">Inoperativo</mat-option>
-                      </mat-select>
-                  </mat-form-field>
-              </div>
-              <div class="col-sm-6 col-lg-4">
-                  <mat-form-field>
-                      <mat-label>Ubicación</mat-label>
-                      <input matInput formControlName="ubicacion" type="text">
-                  </mat-form-field>
-              </div>
-              <div class="col-sm-6 col-lg-4">
-                  <mat-form-field>
-                      <mat-label>Asignación</mat-label>
-                      <input matInput formControlName="asignacion" type="text">
-                  </mat-form-field>
-              </div>
-              <div class="col-sm-6 col-lg-4">
-                <mat-form-field>
-                    <mat-label>Caracteristicas</mat-label>
-                    <textarea matInput formControlName="caracteristicas" required></textarea>
-                  </mat-form-field>
-            </div>
+    <mat-card-header>
+        <mat-card-title class="m-b-0">Registro de equipos</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="b-t-1">
+        <form [formGroup]="equipmentForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-sm-6 col-lg-4">
+                    <mat-form-field>
+                        <mat-label>Bien Nacional</mat-label>
+                        <input matInput formControlName="bienNacional" type="text">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <mat-form-field>
+                        <mat-label>Tipo de Equipo</mat-label>
+                        <input matInput formControlName="tipoEquipo" type="text">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <mat-form-field>
+                        <mat-label>Número de Serie</mat-label>
+                        <input matInput formControlName="numeroSerie" type="number">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <mat-form-field>
+                        <mat-label>Estado</mat-label>
+                        <mat-select formControlName="estado">
+                            <mat-option value="opertativo">Operativo</mat-option>
+                            <mat-option value="reparacion">Reparación</mat-option>
+                            <mat-option value="inoperativo">Inoperativo</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <mat-form-field>
+                        <mat-label>Ubicación</mat-label>
+                        <input matInput formControlName="ubicacion" type="text">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <mat-form-field>
+                        <mat-label>Asignación</mat-label>
+                        <input matInput formControlName="asignacion" type="text">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <mat-form-field>
+                        <mat-label>Características</mat-label>
+                        <textarea matInput formControlName="caracteristicas" required></textarea>
+                    </mat-form-field>
+                </div>
 
-          </div>
-          <div style="margin: auto;">
-              <button mat-raised-button color="primary" type="submit">Enviar</button>
-          </div>
-      </form>
-  </mat-card-content>
+            </div>
+            <div style="margin: auto;">
+                <button mat-raised-button color="primary" type="submit">Enviar</button>
+            </div>
+        </form>
+    </mat-card-content>
 </mat-card>
