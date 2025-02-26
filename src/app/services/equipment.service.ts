@@ -3,12 +3,14 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service'; // Importar AuthService
+import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class EquipmentService {
-  private apiUrl = 'http://localhost:3000/api/equipments'; // URL del backend
+  private apiUrl = `${environment.apiUrl}/equipments`; // URL del backend
 
   constructor(
     private http: HttpClient,

@@ -19,26 +19,26 @@
           "options": {
             "allowedCommonJsDependencies": [
               "apexcharts",
-               "bezier-easing", 
-               "moment",
-               "jspdf-autotable",
-               "core-js/modules/es.array.index-of.js",
-               "core-js/modules/es.array.iterator.js",
-               "core-js/modules/es.array.reduce.js",
-               "core-js/modules/es.array.reverse.js",
-               "core-js/modules/es.promise.js",
-               "core-js/modules/es.regexp.to-string.js",
-               "core-js/modules/es.string.ends-with.js",
-               "core-js/modules/es.string.includes.js",
-               "core-js/modules/es.string.match.js",
-               "core-js/modules/es.string.replace.js",
-               "core-js/modules/es.string.split.js",
-               "core-js/modules/es.string.starts-with.js",
-               "core-js/modules/es.string.trim.js",
-               "core-js/modules/web.dom-collections.iterator.js",
-               "raf",
-               "rgbcolor"
-              ],
+              "bezier-easing",
+              "moment",
+              "jspdf-autotable",
+              "core-js/modules/es.array.index-of.js",
+              "core-js/modules/es.array.iterator.js",
+              "core-js/modules/es.array.reduce.js",
+              "core-js/modules/es.array.reverse.js",
+              "core-js/modules/es.promise.js",
+              "core-js/modules/es.regexp.to-string.js",
+              "core-js/modules/es.string.ends-with.js",
+              "core-js/modules/es.string.includes.js",
+              "core-js/modules/es.string.match.js",
+              "core-js/modules/es.string.replace.js",
+              "core-js/modules/es.string.split.js",
+              "core-js/modules/es.string.starts-with.js",
+              "core-js/modules/es.string.trim.js",
+              "core-js/modules/web.dom-collections.iterator.js",
+              "raf",
+              "rgbcolor"
+            ],
             "outputPath": "dist/Spike",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -54,6 +54,12 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -66,9 +72,21 @@
                   "maximumError": "12mb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": true,
+              "buildOptimizer": true,
+              "sourceMap": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "namedChunks": false
             },
             "development": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.ts"
+                }
+              ],
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,
@@ -103,7 +121,7 @@
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets", "src/assets/background","src/assets/logos"],
+            "assets": ["src/favicon.ico", "src/assets", "src/assets/background", "src/assets/logos"],
             "styles": ["src/styles.scss"],
             "scripts": []
           }

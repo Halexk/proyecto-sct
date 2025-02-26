@@ -4,8 +4,9 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
-const apiUrl = 'http://localhost:3000/api/users'; // URL del backend
+const apiUrl = `${environment.apiUrl}/users`; // URL del backend
 
 interface LoginResponse {
   token: string;
